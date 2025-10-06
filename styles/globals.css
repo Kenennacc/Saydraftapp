@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@plugin '../hero.ts';
+/* Note: You may need to change the path to fit your project structure */
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --sidebar-visible-width: 100%;
+  --sidebar-collapsed-width: 0;
+  --sidebar-collapsed-opacity: 0;
+  --sidebar-visible-opacity: 1;
+}
+
+body {
+  @apply p-0 m-0 box-border;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --sidebar-visible-width: 320px;
+    --sidebar-collapsed-width: auto;
+    --sidebar-collapsed-opacity: 1;
+    --sidebar-visible-opacity: 1;
+  }
+}
+
+@theme {
+  --color-primary: #5940ff;
+}
