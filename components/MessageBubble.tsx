@@ -36,13 +36,13 @@ export default function MessageBubble({
     >
       <div
         className={clsx(
-          "flex shrink-0 flex-col md:max-w-1/2 w-auto gap-1",
+          "flex shrink-0 flex-col md:max-w-1/2 w-full gap-1",
           end ? "md:justify-end items-end" : "md:justify-start items-start",
         )}
       >
         <div
           className={clsx(
-            "rounded-xl w-auto relative inline-block p-4",
+            "rounded-xl w-full wrap-break-word  relative inline-block p-4",
             !end
               ? "rounded-bl-none bg-[#212121]"
               : " bg-linear-to-br from-[#5940ff] rounded-br-none from-40% to-[#FF705B] ",
