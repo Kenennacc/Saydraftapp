@@ -14,6 +14,7 @@ export default function NoChat() {
         src="/ai.gif"
         alt="ai"
         height={200}
+        unoptimized
         as={NextImage}
         width={200}
         className="w-90 shrink-0 h-70 object-cover"

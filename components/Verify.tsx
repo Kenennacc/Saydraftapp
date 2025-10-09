@@ -89,7 +89,13 @@ export default function Verify() {
           ? "Thank you for confirming your email address. Your account is now fully activated and ready to use."
           : "We've sent an email to your inbox. Continue account creation using the link via email."
       }
-      onButtonPress={isVerified ? () => {} : resendEmail}
+      onButtonPress={
+        isVerified
+          ? () => {
+              router.push("/chat");
+            }
+          : resendEmail
+      }
       isButtonLoading={isPending}
       buttonText={isVerified ? "Go home" : "Resend email"}
       lottie={isVerified ? celebrationAnimation : emailAnimation}
