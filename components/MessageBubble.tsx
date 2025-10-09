@@ -73,7 +73,7 @@ export default function MessageBubble({
             download
             className="truncate max-w-[40%] justify-start "
           >
-            Generated Contract
+            Download Contract
           </Button>
         ))}
 

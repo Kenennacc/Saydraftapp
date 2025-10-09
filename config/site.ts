@@ -2,23 +2,23 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "SayDraft",
-  description: "Make beautiful websites regardless of your design experience.",
+  description: "The Future of Contracts Isn't Written — It's Spoken. Create, negotiate, and sign contracts with your voice.",
   navItems: [
     {
       label: "Home",
       href: "/",
     },
     {
-      label: "Docs",
-      href: "/docs",
+      label: "Features",
+      href: "#features",
+    },
+    {
+      label: "How It Works",
+      href: "#how-it-works",
     },
     {
       label: "Pricing",
-      href: "/pricing",
-    },
-    {
-      label: "Blog",
-      href: "/blog",
+      href: "#pricing",
     },
     {
       label: "About",
@@ -60,10 +60,10 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/heroui-inc/heroui",
-    twitter: "https://twitter.com/hero_ui",
-    docs: "https://heroui.com",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
+    github: "https://github.com/saydraft/saydraft",
+    twitter: "https://twitter.com/saydraft",
+    docs: "https://docs.saydraft.com",
+    discord: "https://discord.gg/saydraft",
+    sponsor: "https://patreon.com/saydraft",
   },
 };
