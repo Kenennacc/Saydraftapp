@@ -32,7 +32,11 @@ export const getDayPeriod = (timeZone: string) => {
     dayPeriod: "narrow",
     timeZone,
   });
-  return formatter.format(new Date()).slice(6);
+  console.log(formatter.format(new Date()));
+  let from = 6;
+  const period = formatter.format(new Date());
+  if (/night/.test(period)) from = 2;
+  return period.slice(from);
 };
 
 export const tap = async (volume: number = 1) => {
