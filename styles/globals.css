@@ -11,6 +11,10 @@
   --sidebar-visible-opacity: 1;
 }
 
+html {
+  @apply scroll-smooth;
+}
+
 body {
   @apply p-0 m-0 box-border;
 }
@@ -29,7 +33,7 @@ body {
 }
 
 .bg-grid-pattern {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;

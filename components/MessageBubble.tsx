@@ -57,7 +57,7 @@ export default function MessageBubble({
               messageId={id}
               isSelected={prompt.selected}
               key={prompt.id}
-              value={prompt.value}
+              text={prompt.value}
             />
           ))}
         </div>

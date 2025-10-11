@@ -1,8 +1,12 @@
 import queryClient from "@/queryClient";
 import { getChat } from "@/services/chat";
+import { Button } from "@heroui/button";
+import { useDisclosure } from "@heroui/modal";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useQuery } from "@tanstack/react-query";
+import { MailIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import InviteForm from "./InviteForm";
 import Messages from "./Messages";
 import { Navbar } from "./Navbar";
 import NoChat from "./NoChat";
@@ -16,6 +20,7 @@ type Props = {
 export default function Chat({ onSidebarClick }: Props) {
   const params = useSearchParams();
   const chatId = params.get("id");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { data, isLoading } = useQuery({
     queryKey: ["chats", chatId],
@@ -42,6 +47,25 @@ export default function Chat({ onSidebarClick }: Props) {
         )}
       </ScrollShadow>
       {chatId && data?.state === "MIC" ? <Recorder chatId={chatId} /> : null}
+      {chatId && data?.state === "EMAIL" ? (
+        <>
+          <section className="flex items-center justify-center py-6">
+            <Button
+              onPress={onOpen}
+              color="primary"
+              size="lg"
+              startContent={<MailIcon size={18} />}
+            >
+              Send Invite
+            </Button>
+          </section>
+          <InviteForm
+            chatId={chatId}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
+        </>
+      ) : null}
     </section>
   );
 }

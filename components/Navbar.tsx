@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
 import { ChevronDown, PlusIcon, SidebarIcon, UserIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useMediaQuery } from "react-responsive";
 import ChatDropdownMenu from "./ChatDropdownMenu";
 import Profile from "./Profile";
 
@@ -35,6 +36,9 @@ export const Navbar = ({ chat, onSidebarClick }: Props) => {
   });
   const router = useRouter();
   const params = useSearchParams();
+  const isMobile = useMediaQuery({
+    query: "(max-width: 640px)",
+  });
 
   return (
     <>
@@ -71,12 +75,13 @@ export const Navbar = ({ chat, onSidebarClick }: Props) => {
           <Button
             isLoading={isPending}
             startContent={<PlusIcon size={16} />}
+            isIconOnly={isMobile}
             className="gap-1 bg-[#212121]"
             onPress={() => {
               mutate();
             }}
           >
-            <span className="hidden md:inline">New Chat</span>
+            <span className="hidden sm:inline">New Chat</span>
           </Button>
           <Profile
             trigger={

@@ -27,18 +27,6 @@ export const secondsToTime = (seconds: number) => {
   return `${prefix(minutes)}:${prefix(_seconds)}`;
 };
 
-export const getDayPeriod = (timeZone: string) => {
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    dayPeriod: "narrow",
-    timeZone,
-  });
-  console.log(formatter.format(new Date()));
-  let from = 6;
-  const period = formatter.format(new Date());
-  if (/night/.test(period)) from = 2;
-  return period.slice(from);
-};
-
 export const tap = async (volume: number = 1) => {
   try {
     const audio = new Audio("/tap.mp3");

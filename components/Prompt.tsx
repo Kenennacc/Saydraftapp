@@ -7,16 +7,11 @@ import clsx from "clsx";
 type Props = {
   messageId: string;
   chatId: string;
-  value: string;
+  text: string;
   isSelected: boolean;
 };
 
-export default function Prompt({
-  chatId,
-  messageId,
-  value,
-  isSelected,
-}: Props) {
+export default function Prompt({ chatId, messageId, text, isSelected }: Props) {
   const { isPending, mutate } = useMutation({
     mutationFn(data: SelectPrompt) {
       return selectPrompt(data);
@@ -29,12 +24,12 @@ export default function Prompt({
   return (
     <Button
       className={clsx(isSelected && "bg-primary")}
-      onPress={(e) => mutate({ chatId, messageId, value })}
+      onPress={(e) => mutate({ chatId, messageId, text })}
       variant="flat"
       isLoading={isPending}
       isIconOnly
     >
-      {value}
+      {text}
     </Button>
   );
 }
