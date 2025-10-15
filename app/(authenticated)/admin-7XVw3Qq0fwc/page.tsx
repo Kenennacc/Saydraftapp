@@ -41,7 +41,6 @@ import useAdminUsers, { useUserStats } from "@/hooks/useAdminUsers";
 import { createUser, updateUser, deleteUser, verifyUser, banUser, unbanUser } from "@/services/admin";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addToast} from '@heroui/toast'
-import AdminGuard from "@/components/AdminGuard";
 
 export default function AdminDashboard() {
   const user = useUserInContext();
@@ -319,8 +318,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <AdminGuard>
-      <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-6">
         <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -811,7 +809,6 @@ export default function AdminDashboard() {
           )}
         </ModalContent>
       </Modal>
-      </div>
-    </AdminGuard>
+    </div>
   );
 }
