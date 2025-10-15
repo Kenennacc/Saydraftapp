@@ -438,6 +438,7 @@ export default function AdminDashboard() {
                   <TableColumn>EMAIL</TableColumn>
                   <TableColumn>STATUS</TableColumn>
                   <TableColumn>ROLE</TableColumn>
+                  <TableColumn>SIGN UP DATE</TableColumn>
                   <TableColumn>LAST LOGIN</TableColumn>
                   <TableColumn>ACTIONS</TableColumn>
                 </TableHeader>
@@ -483,6 +484,11 @@ export default function AdminDashboard() {
                         >
                           {user.role}
                         </Chip>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">
+                          {new Date(user.createdAt).toLocaleDateString()}
+                        </span>
                       </TableCell>
                       <TableCell>
                         {user.lastLogin ? (
