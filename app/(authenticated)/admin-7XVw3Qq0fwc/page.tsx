@@ -19,6 +19,7 @@ import {
 } from "@heroui/dropdown";
 import { Input } from "@heroui/input";
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure } from "@heroui/modal";
+import Link from "next/link";
 import { 
   MoreVerticalIcon, 
   SearchIcon, 
@@ -323,9 +324,14 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <ShieldCheckIcon className="w-8 h-8 text-primary" />
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <ShieldCheckIcon className="w-8 h-8 text-primary" />
+              <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+            </div>
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <img src="/logo.png" alt="SayDraft Logo" className="w-8 h-8" />
+            </Link>
           </div>
           <p className="text-foreground/70">
             Manage users and system settings
