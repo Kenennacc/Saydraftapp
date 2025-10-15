@@ -1,6 +1,7 @@
 import { setQueryParam } from "@/misc";
 import { useUserInContext } from "@/providers/User";
 import { getChats } from "@/services/chat";
+import useAdminAccess from "@/hooks/useAdminAccess";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { Button } from "@heroui/button";
 import { Image } from "@heroui/image";
@@ -8,7 +9,7 @@ import { Link } from "@heroui/link";
 import { Listbox, ListboxItem } from "@heroui/listbox";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { EllipsisIcon, ReceiptTextIcon, SidebarIcon } from "lucide-react";
+import { EllipsisIcon, ReceiptTextIcon, SidebarIcon, ShieldCheckIcon } from "lucide-react";
 import NextLink from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ export default function Sidebar({ isOpen, onSidebarChange }: Props) {
   });
   const [selectedIndex, setSelectedIndex] = useState<string | null>(null);
   const user = useUserInContext();
+  const { canAccessAdmin } = useAdminAccess();
   const params = useSearchParams();
   const id = params.get("id");
   const router = useRouter();
@@ -73,6 +75,21 @@ export default function Sidebar({ isOpen, onSidebarChange }: Props) {
       </section>
       {isOpen ? (
         <section className="mt-12">
+          {/* Admin Navigation - Only show for admin users */}
+          {canAccessAdmin && (
+            <div className="px-4 mb-6">
+              <NextLink href="/admin">
+                <Button
+                  variant="light"
+                  className="w-full justify-start"
+                  startContent={<ShieldCheckIcon size={18} />}
+                >
+                  Admin Dashboard
+                </Button>
+              </NextLink>
+            </div>
+          )}
+          
           <Accordion
             itemClasses={{
               base: "px-3",

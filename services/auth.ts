@@ -29,6 +29,7 @@ export type User = {
   email: string;
   timezone: string;
   isVerified: boolean;
+ isAdmin: boolean;
 };
 
 export type ResendVerificationLink = {
