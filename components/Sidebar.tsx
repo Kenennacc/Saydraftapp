@@ -78,7 +78,7 @@ export default function Sidebar({ isOpen, onSidebarChange }: Props) {
           {/* Admin Navigation - Only show for admin users */}
           {canAccessAdmin && (
             <div className="px-4 mb-6">
-              <NextLink href="/admin">
+              <NextLink href="/admin-7XVw3Qq0fwc">
                 <Button
                   variant="light"
                   className="w-full justify-start"
