@@ -41,12 +41,10 @@ import { createUser, updateUser, deleteUser, verifyUser, banUser, unbanUser } fr
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addToast} from '@heroui/toast'
 import AdminGuard from "@/components/AdminGuard";
-import useAdminPermissions from "@/hooks/useAdminPermissions";
 
 export default function AdminDashboard() {
   const user = useUserInContext();
-  const { canManageUsers, canModerateUsers, hasPermission } = useAdminPermissions();
-  const [searchTerm, setSearchTerm] = useState("");
+ const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -273,27 +271,20 @@ export default function AdminDashboard() {
     ];
 
     // Only show edit option if user has permission
-    if (hasPermission("users.update")) {
       items.push({
         key: "edit",
         label: "Edit User",
         icon: <EditIcon className="w-4 h-4" />,
         onPress: () => handleUserAction("edit", user)
       });
-    }
-
-    // Only show verify option if user has permission and user is not verified
-    if (hasPermission("users.verify") && !user.isVerified) {
+  
       items.push({
         key: "verify",
         label: "Verify Email",
         icon: <CheckIcon className="w-4 h-4" />,
         onPress: () => handleUserAction("verify", user)
       });
-    }
-
-    // Only show ban/unban options if user has permission
-    if (hasPermission("users.ban") || hasPermission("users.unban")) {
+ 
       if (!user.bannedAt) {
         items.push({
           key: "ban",
@@ -311,10 +302,8 @@ export default function AdminDashboard() {
           className: "text-success"
         });
       }
-    }
+    
 
-    // Only show delete option if user has permission
-    if (hasPermission("users.delete")) {
       items.push({
         key: "delete",
         label: "Delete User",
@@ -323,7 +312,7 @@ export default function AdminDashboard() {
         className: "text-danger",
         color: "danger"
       });
-    }
+    
 
     return items;
   };
@@ -403,14 +392,14 @@ export default function AdminDashboard() {
                 Manage registered users and their permissions
               </p>
             </div>
-            {hasPermission("users.create") && (
+         
               <Button
                 color="primary"
                 startContent={<PlusIcon className="w-4 h-4" />}
               >
                 Add User
               </Button>
-            )}
+          
           </CardHeader>
           <CardBody>
             <div className="flex flex-col gap-4">
