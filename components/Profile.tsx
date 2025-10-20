@@ -13,7 +13,7 @@ import {
 import { addToast } from "@heroui/toast";
 import { User } from "@heroui/user";
 import { useMutation } from "@tanstack/react-query";
-import { EditIcon, KeyIcon, LogOutIcon } from "lucide-react";
+import { CreditCardIcon, EditIcon, KeyIcon, LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -71,6 +71,15 @@ export default function Profile({
           >
             Change Password
           </DropdownItem>
+          {!user.isAdmin ? (
+            <DropdownItem
+              startContent={<CreditCardIcon size={18} />}
+              key="subscription"
+              onPress={() => router.push("/subscription")}
+            >
+              Subscription
+            </DropdownItem>
+          ) : null}
         </DropdownSection>
         <DropdownSection>
           <DropdownItem

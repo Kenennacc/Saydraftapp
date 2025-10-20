@@ -4,6 +4,7 @@ import celebrationAnimation from "@/lotties/celebration.json";
 import emailAnimation from "@/lotties/email.json";
 import { formatApiError } from "@/misc/errors";
 import {
+  logout,
   resendVerificationLink,
   ResendVerificationLink,
   verifyEmail,
@@ -56,11 +57,33 @@ export default function Verify() {
     },
   });
 
+  const { mutate: logoutMutation, isPending: isLoggingOut } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess() {
+      addToast({
+        description: "Logged out successfully",
+        color: "success",
+      });
+      router.push("/auth/login");
+    },
+    onError(err) {
+      const message = formatApiError(err as Error);
+      addToast({
+        description: message,
+        color: "danger",
+      });
+    },
+  });
+
   const isVerified = !!token && isSuccess;
 
   const resendEmail = () => {
     if (!email) return;
     mutate({ email });
+  };
+
+  const handleLogout = () => {
+    logoutMutation();
   };
 
   useEffect(() => {
@@ -99,6 +122,9 @@ export default function Verify() {
       isButtonLoading={isPending}
       buttonText={isVerified ? "Go home" : "Resend email"}
       lottie={isVerified ? celebrationAnimation : emailAnimation}
+      secondaryButtonText="Logout"
+      isSecondaryButtonLoading={isLoggingOut}
+      onSecondaryButtonPress={handleLogout}
     />
   );
 }

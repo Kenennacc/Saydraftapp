@@ -16,6 +16,13 @@ type Props = {
   isButtonLoading?: boolean;
 
   onButtonPress?: () => void;
+
+  // Optional secondary button (e.g., logout)
+  secondaryButtonText?: string;
+
+  isSecondaryButtonLoading?: boolean;
+
+  onSecondaryButtonPress?: () => void;
 };
 
 export default function EmailLink({
@@ -25,6 +32,9 @@ export default function EmailLink({
   title,
   isButtonLoading,
   description,
+  secondaryButtonText,
+  isSecondaryButtonLoading,
+  onSecondaryButtonPress,
 }: Props) {
   return (
     <Card
@@ -55,6 +65,18 @@ export default function EmailLink({
         >
           {buttonText}
         </Button>
+        {secondaryButtonText && (
+          <Button
+            onPress={onSecondaryButtonPress}
+            isLoading={isSecondaryButtonLoading}
+            size="lg"
+            variant="light"
+            className="mt-4"
+            fullWidth
+          >
+            {secondaryButtonText}
+          </Button>
+        )}
       </CardBody>
     </Card>
   );
