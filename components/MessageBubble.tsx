@@ -77,7 +77,7 @@ export default function MessageBubble({
           </Button>
         ))}
 
-        {!end && (isMobile || showMenu) ? <MessageMenu /> : null}
+        {/* {!end && (isMobile || showMenu) ? <MessageMenu /> : null} */}
       </div>
     </div>
   );

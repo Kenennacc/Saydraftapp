@@ -4,7 +4,7 @@ import { Button } from "@heroui/button";
 import { useDisclosure } from "@heroui/modal";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useQuery } from "@tanstack/react-query";
-import { MailIcon } from "lucide-react";
+import { AlertCircleIcon, MailIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { addToast } from "@heroui/toast";
@@ -102,6 +102,16 @@ export default function Chat({ onSidebarClick }: Props) {
             onOpenChange={onOpenChange}
           />
         </>
+      ) : null}
+      {chatId && data ? (
+        <div className="px-4 py-3 border-t border-divider">
+          <div className="flex items-center justify-center gap-2 max-w-4xl mx-auto">
+            <AlertCircleIcon size={16} className="text-warning/70 shrink-0" />
+            <p className="text-xs text-default-500 leading-relaxed text-center">
+              Our AI may make errors or spelling mistakes. If you notice any, please correct or spell them out to keep your contract accurate.
+            </p>
+          </div>
+        </div>
       ) : null}
     </section>
   );
