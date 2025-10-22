@@ -12,6 +12,11 @@ export type AdminUser = {
   role: "admin" | "user";
   createdAt: string;
   lastLogin?: string;
+  subscription?: {
+    id: string;
+    plan: "free" | "paid";
+    status: "active" | "canceled" | "past_due" | "unpaid" | "trialing" | "incomplete" | "incomplete_expired";
+  } | null;
 };
 
 export type CreateUser = {

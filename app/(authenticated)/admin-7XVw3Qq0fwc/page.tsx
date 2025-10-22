@@ -38,7 +38,7 @@ import {
 import { useState, useMemo } from "react";
 import { useUserInContext } from "@/providers/User";
 import useAdminUsers, { useUserStats } from "@/hooks/useAdminUsers";
-import { createUser, updateUser, deleteUser, verifyUser, banUser, unbanUser } from "@/services/admin";
+import { AdminUser, createUser, updateUser, deleteUser, verifyUser, banUser, unbanUser } from "@/services/admin";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addToast} from '@heroui/toast'
 
@@ -47,7 +47,7 @@ export default function AdminDashboard() {
  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [modalType, setModalType] = useState<"view" | "edit" | "delete" | "verify" | "ban" | "unban">("view");
   const [editForm, setEditForm] = useState({
@@ -70,7 +70,7 @@ export default function AdminDashboard() {
     return <div>Loading...</div>;
   }
 
-  const users = usersData?.users || [];
+  const users: AdminUser[] = usersData?.users || [];
   const pagination = usersData?.pagination;
 
   // Mutations
@@ -438,6 +438,7 @@ export default function AdminDashboard() {
                   <TableColumn>EMAIL</TableColumn>
                   <TableColumn>STATUS</TableColumn>
                   <TableColumn>ROLE</TableColumn>
+                  <TableColumn>SUBSCRIPTION</TableColumn>
                   <TableColumn>SIGN UP DATE</TableColumn>
                   <TableColumn>LAST LOGIN</TableColumn>
                   <TableColumn>ACTIONS</TableColumn>
@@ -486,15 +487,29 @@ export default function AdminDashboard() {
                         </Chip>
                       </TableCell>
                       <TableCell>
+                        <Chip
+                          color={user.subscription?.plan === "paid" ? "success" : "default"}
+                          size="sm"
+                          variant="flat"
+                        >
+                          {user.subscription?.plan === "paid" ? "Paid" : "Free"}
+                        </Chip>
+                      </TableCell>
+                      <TableCell>
                         <span className="text-sm">
                           {new Date(user.createdAt).toLocaleDateString()}
                         </span>
                       </TableCell>
                       <TableCell>
                         {user.lastLogin ? (
-                          <span className="text-sm">
-                            {new Date(user.lastLogin).toLocaleDateString()}
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="text-sm">
+                              {new Date(user.lastLogin).toLocaleDateString()}
+                            </span>
+                            <span className="text-xs text-foreground/60">
+                              {new Date(user.lastLogin).toLocaleTimeString()}
+                            </span>
+                          </div>
                         ) : (
                           <span className="text-sm text-foreground/50">
                             Never
@@ -635,6 +650,16 @@ export default function AdminDashboard() {
                       </Chip>
                     </div>
                     <div>
+                      <label className="text-sm font-medium">Subscription</label>
+                      <Chip
+                        color={selectedUser.subscription?.plan === "paid" ? "success" : "default"}
+                        size="sm"
+                        variant="flat"
+                      >
+                        {selectedUser.subscription?.plan === "paid" ? "Paid" : "Free"}
+                      </Chip>
+                    </div>
+                    <div>
                       <label className="text-sm font-medium">Created At</label>
                       <p className="text-sm text-foreground/70">
                         {new Date(selectedUser.createdAt).toLocaleDateString()}
@@ -642,12 +667,18 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <label className="text-sm font-medium">Last Login</label>
-                      <p className="text-sm text-foreground/70">
-                        {selectedUser.lastLogin 
-                          ? new Date(selectedUser.lastLogin).toLocaleDateString()
-                          : "Never"
-                        }
-                      </p>
+                      {selectedUser.lastLogin ? (
+                        <div className="flex flex-col gap-1">
+                          <p className="text-sm text-foreground/70">
+                            {new Date(selectedUser.lastLogin).toLocaleDateString()}
+                          </p>
+                          <p className="text-xs text-foreground/60">
+                            {new Date(selectedUser.lastLogin).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-foreground/70">Never</p>
+                      )}
                     </div>
                     {selectedUser.bannedAt && (
                       <div>

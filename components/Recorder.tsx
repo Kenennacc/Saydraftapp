@@ -1,28 +1,65 @@
 import { secondsToTime, tap } from "@/misc";
 import { formatApiError } from "@/misc/errors";
 import queryClient from "@/queryClient";
-import { listenToAudio } from "@/services/chat";
+import { createChat, listenToAudio } from "@/services/chat";
 import { Button } from "@heroui/button";
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { MicIcon, SendHorizonalIcon, XIcon } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
-  chatId: string;
+  chatId?: string | null;
 };
 
 export default function Recorder({ chatId }: Props) {
+  const router = useRouter();
+  const params = useSearchParams();
   const [isRecording, setIsRecording] = useState(false);
+  const [pendingChatId, setPendingChatId] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
   const trashRef = useRef(false);
   const [seconds, setSeconds] = useState(0);
 
+  const createChatMutation = useMutation({
+    mutationFn: createChat,
+    onSuccess: async (response) => {
+      const newChatId = response.data.id;
+      setPendingChatId(newChatId);
+      
+      // Update URL with new chat ID
+      const url = new URL(window.location.href);
+      url.searchParams.set("id", newChatId);
+      router.push(url.pathname + url.search);
+      
+      await queryClient.invalidateQueries({
+        queryKey: ["chats"],
+      });
+    },
+    onError(err) {
+      const message = formatApiError(err as Error);
+      addToast({
+        description: message,
+        color: "danger",
+      });
+    },
+  });
+
+  // Auto-start recording after chat is created
+  useEffect(() => {
+    if (pendingChatId && chatId === pendingChatId && !isRecording) {
+      setPendingChatId(null);
+      record();
+    }
+  }, [pendingChatId, chatId, isRecording]);
+
   const { mutate, isPending } = useMutation({
     mutationFn(data: Blob) {
+      if (!chatId) throw new Error("Chat ID is required");
       return listenToAudio(data, chatId);
     },
     async onSuccess() {
@@ -146,12 +183,18 @@ export default function Recorder({ chatId }: Props) {
         <Button
           onPress={async () => {
             await tap();
-            if (!isRecording) return record();
+            if (!isRecording) {
+              // If no chat ID, create chat first
+              if (!chatId) {
+                return createChatMutation.mutate();
+              }
+              // Otherwise, start recording directly
+              return record();
+            }
             setIsRecording(false);
             stopRecording();
           }}
-          isLoading={isPending}
-          isDisabled={!!!chatId}
+          isLoading={isPending || createChatMutation.isPending}
           color="primary"
           size="lg"
           isIconOnly

@@ -83,7 +83,7 @@ export default function Chat({ onSidebarClick }: Props) {
           <Messages chatId={data!.id} />
         )}
       </ScrollShadow>
-      {chatId && data?.state === "MIC" ? <Recorder chatId={chatId} /> : null}
+      {(!data || (data?.state !== "TEXT" && data?.state !== "EMAIL")) ? <Recorder chatId={chatId} /> : null}
       {chatId && data?.state === "EMAIL" ? (
         <>
           <section className="flex items-center justify-center py-6">
