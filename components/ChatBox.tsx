@@ -108,7 +108,8 @@ export default function Chat({ onSidebarClick }: Props) {
           <div className="flex items-center justify-center gap-2 max-w-4xl mx-auto">
             <AlertCircleIcon size={16} className="text-warning/70 shrink-0" />
             <p className="text-xs text-default-500 leading-relaxed text-center">
-              Our AI may make errors or spelling mistakes. If you notice any, please correct or spell them out to keep your contract accurate.
+              Our AI may make errors or spelling mistakes. If you notice any, please correct or spell them out to keep your contract accurate.{" "}
+              <span className="text-primary font-medium">Press the microphone below to start.</span>
             </p>
           </div>
         </div>
