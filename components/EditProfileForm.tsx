@@ -125,6 +125,7 @@ export default function EditProfileForm({ isOpen, onOpenChange }: Props) {
             </ModalHeader>
             <ModalBody>
               <Input
+                autoFocus
                 label="First Name"
                 placeholder="Enter your first name"
                 value={firstname}

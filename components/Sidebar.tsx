@@ -156,16 +156,14 @@ export default function Sidebar({ isOpen, closeSidebar,   toggleSidebar }: Props
                         className="truncate my-1"
                         key={chat.id}
                         onPress={() => {
-                          if (selectedIndex) {
-                            setQueryParam(router, params, {
-                              key: "id",
-                              value: selectedIndex,
-                            });
-                            // Close sidebar on mobile when a chat is selected
-                            if (isMobile) {
-                        
-                              closeSidebar();
-                            }
+                          // Use chat.id directly instead of selectedIndex
+                          setQueryParam(router, params, {
+                            key: "id",
+                            value: chat.id,
+                          });
+                          // Close sidebar on mobile when a chat is selected
+                          if (isMobile) {
+                            closeSidebar();
                           }
                         }}
                       >
