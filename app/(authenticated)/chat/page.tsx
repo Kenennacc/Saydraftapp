@@ -15,7 +15,11 @@ export default function Chat() {
     <main className="flex items-stretch h-screen">
       <Sidebar
         isOpen={!collapseSidebar}
-        onSidebarChange={() => setCollapsedSidebar((prev) => !prev)}
+        closeSidebar={() => setCollapsedSidebar(true)}
+        toggleSidebar={() => {
+          setCollapsedSidebar((prev) => !prev)
+     
+        }}
       />
       <Divider className="hidden lg:block" orientation="vertical" />
       <ChatBox onSidebarClick={() => setCollapsedSidebar((prev) => !prev)} />

@@ -13,14 +13,16 @@ import { EllipsisIcon, ReceiptTextIcon, SidebarIcon, ShieldCheckIcon } from "luc
 import NextLink from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import ChatDropdownMenu from "./ChatDropdownMenu";
 
 type Props = {
   isOpen: boolean;
-  onSidebarChange: () => void;
+  closeSidebar: () => void;
+  toggleSidebar: () => void;
 };
 
-export default function Sidebar({ isOpen, onSidebarChange }: Props) {
+export default function Sidebar({ isOpen, closeSidebar,   toggleSidebar }: Props) {
   const { data, error, isLoading } = useQuery({
     queryKey: ["chats"],
     async queryFn() {
@@ -34,6 +36,7 @@ export default function Sidebar({ isOpen, onSidebarChange }: Props) {
   const params = useSearchParams();
   const id = params.get("id");
   const router = useRouter();
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   useEffect(() => {
     if (id) {
@@ -67,7 +70,7 @@ export default function Sidebar({ isOpen, onSidebarChange }: Props) {
           className="w-0 cursor-col-resize"
           size="sm"
           isIconOnly
-          onPress={onSidebarChange}
+          onPress={toggleSidebar}
           variant="light"
         >
           <SidebarIcon size={18} />
@@ -152,13 +155,19 @@ export default function Sidebar({ isOpen, onSidebarChange }: Props) {
                         }
                         className="truncate my-1"
                         key={chat.id}
-                        onPress={() =>
-                          selectedIndex &&
-                          setQueryParam(router, params, {
-                            key: "id",
-                            value: selectedIndex,
-                          })
-                        }
+                        onPress={() => {
+                          if (selectedIndex) {
+                            setQueryParam(router, params, {
+                              key: "id",
+                              value: selectedIndex,
+                            });
+                            // Close sidebar on mobile when a chat is selected
+                            if (isMobile) {
+                        
+                              closeSidebar();
+                            }
+                          }
+                        }}
                       >
                         {chat.title}
                       </ListboxItem>

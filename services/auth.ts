@@ -36,6 +36,16 @@ export type ResendVerificationLink = {
   email: string;
 };
 
+export type ChangePassword = {
+  currentPassword: string;
+  newPassword: string;
+};
+
+export type UpdateProfile = {
+  firstname?: string;
+  lastname?: string;
+};
+
 export const login = (payload: Login) => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return client.post<any, any, Login>("/auth/login", payload, {
@@ -80,4 +90,18 @@ export const resendVerificationLink = (email: string) => {
 
 export const logout = () => {
   return client.post("/auth/logout");
+};
+
+export const changePassword = (payload: ChangePassword) => {
+  return client.post<any, { data: { message: string } }, ChangePassword>(
+    "/auth/change-password",
+    payload
+  );
+};
+
+export const updateProfile = (payload: UpdateProfile) => {
+  return client.post<any, { data: { message: string; user: User } }, UpdateProfile>(
+    "/auth/update-profile",
+    payload
+  );
 };

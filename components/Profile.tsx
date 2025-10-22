@@ -10,12 +10,15 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from "@heroui/dropdown";
+import { useDisclosure } from "@heroui/modal";
 import { addToast } from "@heroui/toast";
 import { User } from "@heroui/user";
 import { useMutation } from "@tanstack/react-query";
 import { CreditCardIcon, EditIcon, KeyIcon, LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
+import ChangePasswordForm from "./ChangePasswordForm";
+import EditProfileForm from "./EditProfileForm";
 
 export default function Profile({
   trigger,
@@ -25,6 +28,19 @@ export default function Profile({
 }) {
   const user = useUserInContext();
   const router = useRouter();
+  
+  const {
+    isOpen: isEditProfileOpen,
+    onOpen: onEditProfileOpen,
+    onOpenChange: onEditProfileOpenChange,
+  } = useDisclosure();
+  
+  const {
+    isOpen: isChangePasswordOpen,
+    onOpen: onChangePasswordOpen,
+    onOpenChange: onChangePasswordOpenChange,
+  } = useDisclosure();
+
   const { mutate: logoutMutate } = useMutation({
     mutationFn() {
       return logout();
@@ -42,58 +58,72 @@ export default function Profile({
     },
   });
   return (
-    <Dropdown {...props}>
-      <DropdownTrigger>{trigger}</DropdownTrigger>
+    <>
+      <Dropdown {...props}>
+        <DropdownTrigger>{trigger}</DropdownTrigger>
 
-      <DropdownMenu>
-        <DropdownSection showDivider>
-          <DropdownItem key="user-info">
-            <User
-              avatarProps={{
-                name: `${user.firstname[0]}${user.lastname[0]}`,
-                classNames: {
-                  base: "bg-linear-to-br from-[#5940ff] to-[#FF705B]",
-                },
-              }}
-              className="capitalize"
-              name={`${user.firstname} ${user.lastname}`}
-            />
-          </DropdownItem>
-          <DropdownItem
-            startContent={<EditIcon size={18} />}
-            key="edit-profile"
-          >
-            Edit Profile
-          </DropdownItem>
-          <DropdownItem
-            startContent={<KeyIcon size={18} />}
-            key="change-password"
-          >
-            Change Password
-          </DropdownItem>
-          {!user.isAdmin ? (
-            <DropdownItem
-              startContent={<CreditCardIcon size={18} />}
-              key="subscription"
-              onPress={() => router.push("/subscription")}
-            >
-              Subscription
+        <DropdownMenu>
+          <DropdownSection showDivider>
+            <DropdownItem key="user-info">
+              <User
+                avatarProps={{
+                  name: `${user.firstname[0]}${user.lastname[0]}`,
+                  classNames: {
+                    base: "bg-linear-to-br from-[#5940ff] to-[#FF705B]",
+                  },
+                }}
+                className="capitalize"
+                name={`${user.firstname} ${user.lastname}`}
+              />
             </DropdownItem>
-          ) : null}
-        </DropdownSection>
-        <DropdownSection>
-          <DropdownItem
-            onPress={async () => {
-              logoutMutate();
-            }}
-            className="text-danger"
-            startContent={<LogOutIcon className="stroke-danger" size={18} />}
-            key="edit-profile"
-          >
-            Logout
-          </DropdownItem>
-        </DropdownSection>
-      </DropdownMenu>
-    </Dropdown>
+            <DropdownItem
+              startContent={<EditIcon size={18} />}
+              key="edit-profile"
+              onPress={onEditProfileOpen}
+            >
+              Edit Profile
+            </DropdownItem>
+            <DropdownItem
+              startContent={<KeyIcon size={18} />}
+              key="change-password"
+              onPress={onChangePasswordOpen}
+            >
+              Change Password
+            </DropdownItem>
+            {!user.isAdmin ? (
+              <DropdownItem
+                startContent={<CreditCardIcon size={18} />}
+                key="subscription"
+                onPress={() => router.push("/subscription")}
+              >
+                Subscription
+              </DropdownItem>
+            ) : null}
+          </DropdownSection>
+          <DropdownSection>
+            <DropdownItem
+              onPress={async () => {
+                logoutMutate();
+              }}
+              className="text-danger"
+              startContent={<LogOutIcon className="stroke-danger" size={18} />}
+              key="logout"
+            >
+              Logout
+            </DropdownItem>
+          </DropdownSection>
+        </DropdownMenu>
+      </Dropdown>
+
+      <EditProfileForm
+        isOpen={isEditProfileOpen}
+        onOpenChange={onEditProfileOpenChange}
+      />
+
+      <ChangePasswordForm
+        isOpen={isChangePasswordOpen}
+        onOpenChange={onChangePasswordOpenChange}
+      />
+    </>
   );
 }
