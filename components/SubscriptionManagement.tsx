@@ -202,15 +202,7 @@ export default function SubscriptionManagement() {
 
       <CardBody className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
-            <CalendarIcon className="w-4 h-4 text-foreground/70" />
-            <div>
-              <p className="text-sm text-foreground/70">Current Period</p>
-              <p className="text-sm font-medium text-foreground">
-                {sub.currentPeriodEnd ? formatDate(sub.currentPeriodEnd) : "N/A"}
-              </p>
-            </div>
-          </div>
+
           
           {isTrial && sub.trialEnd && (
             <div className="flex items-center gap-2">
