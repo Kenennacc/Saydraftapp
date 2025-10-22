@@ -16,7 +16,7 @@ import {
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
 import { EditIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -28,6 +28,19 @@ export default function EditProfileForm({ isOpen, onOpenChange }: Props) {
   const [firstname, setFirstname] = useState(user.firstname);
   const [lastname, setLastname] = useState(user.lastname);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+
+  const handleInputFocus = (ref: React.RefObject<HTMLInputElement>) => {
+    // Small delay to ensure keyboard is opening
+    setTimeout(() => {
+      ref.current?.scrollIntoView({ 
+        behavior: "smooth", 
+        block: "center",
+        inline: "nearest"
+      });
+    }, 300);
+  };
 
   useEffect(() => {
     setFirstname(user.firstname);
@@ -123,21 +136,25 @@ export default function EditProfileForm({ isOpen, onOpenChange }: Props) {
               <EditIcon size={20} />
               Edit Profile
             </ModalHeader>
-            <ModalBody>
+            <ModalBody className="gap-4">
               <Input
+                ref={firstNameRef}
                 autoFocus
                 label="First Name"
                 placeholder="Enter your first name"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
+                onFocus={() => handleInputFocus(firstNameRef)}
                 isInvalid={!!errors.firstname}
                 errorMessage={errors.firstname}
               />
               <Input
+                ref={lastNameRef}
                 label="Last Name"
                 placeholder="Enter your last name"
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
+                onFocus={() => handleInputFocus(lastNameRef)}
                 isInvalid={!!errors.lastname}
                 errorMessage={errors.lastname}
               />

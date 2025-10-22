@@ -14,7 +14,7 @@ import {
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
 import { EyeIcon, EyeOffIcon, KeyIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -29,6 +29,20 @@ export default function ChangePasswordForm({ isOpen, onOpenChange }: Props) {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const currentPasswordRef = useRef<HTMLInputElement>(null);
+  const newPasswordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
+  const handleInputFocus = (ref: React.RefObject<HTMLInputElement>) => {
+    // Small delay to ensure keyboard is opening
+    setTimeout(() => {
+      ref.current?.scrollIntoView({ 
+        behavior: "smooth", 
+        block: "center",
+        inline: "nearest"
+      });
+    }, 300);
+  };
 
   const { mutate, isPending } = useMutation({
     mutationFn(payload: ChangePassword) {
@@ -120,13 +134,16 @@ export default function ChangePasswordForm({ isOpen, onOpenChange }: Props) {
               <KeyIcon size={20} />
               Change Password
             </ModalHeader>
-            <ModalBody>
+            <ModalBody className="gap-4">
               <Input
+                ref={currentPasswordRef}
+                autoFocus
                 label="Current Password"
                 placeholder="Enter your current password"
                 type={showCurrentPassword ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                onFocus={() => handleInputFocus(currentPasswordRef)}
                 isInvalid={!!errors.currentPassword}
                 errorMessage={errors.currentPassword}
                 endContent={
@@ -144,11 +161,13 @@ export default function ChangePasswordForm({ isOpen, onOpenChange }: Props) {
                 }
               />
               <Input
+                ref={newPasswordRef}
                 label="New Password"
                 placeholder="Enter your new password"
                 type={showNewPassword ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                onFocus={() => handleInputFocus(newPasswordRef)}
                 isInvalid={!!errors.newPassword}
                 errorMessage={errors.newPassword}
                 endContent={
@@ -166,11 +185,13 @@ export default function ChangePasswordForm({ isOpen, onOpenChange }: Props) {
                 }
               />
               <Input
+                ref={confirmPasswordRef}
                 label="Confirm New Password"
                 placeholder="Confirm your new password"
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onFocus={() => handleInputFocus(confirmPasswordRef)}
                 isInvalid={!!errors.confirmPassword}
                 errorMessage={errors.confirmPassword}
                 endContent={
