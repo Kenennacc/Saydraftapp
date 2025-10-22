@@ -176,7 +176,7 @@ export default function PricingPage() {
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   Perfect Plan
                 </span>
-              </h1>
+            </h1>
               
               <p className="text-lg sm:text-xl text-foreground/70 max-w-3xl mx-auto mb-4">
                 Start with a 7-day free trial. No credit card required. Cancel anytime.
@@ -206,16 +206,16 @@ export default function PricingPage() {
               const isCurrentPlan = (plan.name === "Pro" && isPaidPlan) || (plan.name === "Free" && isFreePlan);
               
               return (
-                <Card
-                  key={plan.name}
+            <Card
+              key={plan.name}
                   className={`relative transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${
-                    plan.popular
+                plan.popular
                       ? "border-2 border-primary shadow-2xl md:scale-105 z-10"
                       : "border border-divider hover:border-primary/50"
                   } ${isCurrentPlan ? "ring-2 ring-success/30" : ""}`}
                 >
                   {/* Popular Badge */}
-                  {plan.popular && (
+              {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <div className={`px-6 py-1.5 rounded-full bg-gradient-to-r ${plan.gradient} text-white text-sm font-semibold shadow-lg`}>
                         ⭐ Most Popular
@@ -229,46 +229,46 @@ export default function PricingPage() {
                       <Chip color="success" size="sm" startContent={<CheckIcon className="w-3 h-3" />}>
                         Active
                       </Chip>
-                    </div>
-                  )}
-                  
+                </div>
+              )}
+              
                   <CardHeader className="pb-6 pt-8">
                     <div className="text-center w-full">
                       {/* Icon with Gradient */}
                       <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-gradient-to-br ${plan.gradient} shadow-lg`}>
-                        {plan.popular ? (
+                    {plan.popular ? (
                           <CrownIcon className="w-10 h-10 text-white" />
-                        ) : (
+                    ) : (
                           <ZapIcon className="w-10 h-10 text-white opacity-80" />
-                        )}
-                      </div>
-                      
+                    )}
+                  </div>
+                  
                       {/* Plan Name */}
                       <h3 className="text-3xl font-bold text-foreground mb-2">
-                        {plan.name}
-                      </h3>
+                    {plan.name}
+                  </h3>
                       
                       {/* Tagline */}
                       <p className="text-sm text-foreground/60 mb-6">{plan.tagline}</p>
-                      
+                  
                       {/* Price */}
                       <div className="mb-2">
-                        <div className="flex items-baseline justify-center gap-2">
+                  <div className="flex items-baseline justify-center gap-2">
                           <span className="text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                            {plan.price}
-                          </span>
+                      {plan.price}
+                    </span>
                           <span className="text-foreground/60 text-lg">/{plan.period.replace('per ', '')}</span>
                         </div>
                         
                         {plan.savings && (
                           <p className="text-sm text-success font-medium mt-2">{plan.savings}</p>
                         )}
-                      </div>
+                  </div>
 
                       {/* Description */}
                       <p className="text-foreground/70 text-sm">{plan.description}</p>
-                    </div>
-                  </CardHeader>
+                </div>
+              </CardHeader>
 
                   <Divider />
 
@@ -278,17 +278,17 @@ export default function PricingPage() {
                       {plan.features.map((feature, index) => {
                         const Icon = feature.icon;
                         return (
-                          <li key={index} className="flex items-start gap-3">
+                    <li key={index} className="flex items-start gap-3">
                             <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
                               plan.popular ? 'bg-primary/10' : 'bg-success/10'
                             }`}>
                               <Icon className={`w-3 h-3 ${plan.popular ? 'text-primary' : 'text-success'}`} />
                             </div>
                             <span className="text-foreground/80 text-sm leading-relaxed">{feature.text}</span>
-                          </li>
+                    </li>
                         );
                       })}
-                    </ul>
+                </ul>
 
                     {/* Limitations (for free plan) */}
                     {plan.limitations && plan.limitations.length > 0 && (
@@ -311,32 +311,32 @@ export default function PricingPage() {
                     )}
 
                     {/* CTA Button */}
-                    <Button
-                      color={plan.popular ? "primary" : "default"}
+                <Button
+                  color={plan.popular ? "primary" : "default"}
                       variant={isCurrentPlan ? "bordered" : "solid"}
-                      size="lg"
-                      fullWidth
-                      isLoading={checkoutMutation.isPending}
+                  size="lg"
+                  fullWidth
+                  isLoading={checkoutMutation.isPending}
                       isDisabled={isButtonDisabled(plan)}
                       className={`font-semibold ${plan.popular && !isCurrentPlan ? 'bg-gradient-to-r from-primary to-secondary text-white' : ''}`}
-                      onPress={() => {
+                  onPress={() => {
                         if (isButtonDisabled(plan)) return;
-                        if (plan.priceId) {
-                          handleUpgrade(plan.priceId);
-                        } else {
-                          router.push("/chat");
-                        }
-                      }}
-                      startContent={
+                    if (plan.priceId) {
+                      handleUpgrade(plan.priceId);
+                    } else {
+                      router.push("/chat");
+                    }
+                  }}
+                  startContent={
                         !checkoutMutation.isPending && plan.popular && !isCurrentPlan ? (
                           <SparklesIcon className="w-4 h-4" />
                         ) : isCurrentPlan ? (
                           <CheckIcon className="w-4 h-4" />
-                        ) : undefined
-                      }
-                    >
+                    ) : undefined
+                  }
+                >
                       {checkoutMutation.isPending ? "Processing..." : getButtonText(plan)}
-                    </Button>
+                </Button>
 
                     {/* Trial Notice */}
                     {plan.popular && !isCurrentPlan && (
@@ -345,8 +345,8 @@ export default function PricingPage() {
                         7-day free trial • Cancel anytime
                       </p>
                     )}
-                  </CardBody>
-                </Card>
+              </CardBody>
+            </Card>
               );
             })}
           </div>
@@ -477,7 +477,7 @@ export default function PricingPage() {
                       </tr>
                     </tbody>
                   </table>
-                </div>
+            </div>
               </CardBody>
             </Card>
 
@@ -514,9 +514,9 @@ export default function PricingPage() {
                 >
                   Manage Subscription
                 </Button>
-              </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </NonAdminGuard>
