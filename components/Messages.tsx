@@ -10,7 +10,8 @@ type Props = {
 
 export default function Messages({ chatId }: Props) {
   const { data, isLoading } = useQuery({
-    queryKey: ["messages"],
+    queryKey: ["messages", chatId],
+    staleTime: 0, // Always fetch fresh messages
     async queryFn() {
       const data = await getMessages(chatId);
       return data.data;

@@ -17,8 +17,9 @@ export default function Prompt({ chatId, messageId, text, isSelected }: Props) {
       return selectPrompt(data);
     },
     async onSuccess() {
-      await queryClient.invalidateQueries({ queryKey: ["messages"] });
+      await queryClient.invalidateQueries({ queryKey: ["messages", chatId] });
       await queryClient.invalidateQueries({ queryKey: ["chats", chatId] });
+      await queryClient.invalidateQueries({ queryKey: ["chats"] });
     },
   });
   return (

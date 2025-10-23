@@ -64,7 +64,7 @@ export default function Recorder({ chatId }: Props) {
     },
     async onSuccess() {
       await queryClient.invalidateQueries({
-        queryKey: ["messages"],
+        queryKey: ["messages", chatId],
       });
       await queryClient.invalidateQueries({
         queryKey: ["chats"],

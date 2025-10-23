@@ -43,7 +43,7 @@ export default function InviteForm({ chatId, isOpen, onOpenChange }: Props) {
         queryKey: ["chats", chatId],
       });
       await queryClient.invalidateQueries({
-        queryKey: ["messages"],
+        queryKey: ["messages", chatId],
       });
     },
     onError(err) {

@@ -59,11 +59,13 @@ export default function Chat({ onSidebarClick }: Props) {
   const { data, isLoading } = useQuery({
     queryKey: ["chats", chatId],
     enabled: !!chatId,
+    refetchOnMount: 'always',
+    staleTime: 0, // Always consider data stale to ensure fresh state
     async queryFn({ queryKey: [key, id] }) {
       if (!id) return;
       const chat = await getChat(id);
       await queryClient.invalidateQueries({
-        queryKey: ["messages"],
+        queryKey: ["messages", id],
       });
       return chat?.data;
     },
