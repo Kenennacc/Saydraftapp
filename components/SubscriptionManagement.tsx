@@ -202,8 +202,6 @@ export default function SubscriptionManagement() {
 
       <CardBody className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
-
-          
           {isTrial && sub.trialEnd && (
             <div className="flex items-center gap-2">
               <CalendarIcon className="w-4 h-4 text-warning" />
